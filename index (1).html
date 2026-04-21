@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plant-Based Nudge Calculator — Better Food Foundation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --green-main: #118663;
+    --green-light: #06a38d;
+    --green-dark: #00794e;
+    --green-darkest: #014f31;
+    --orange: #f05b43;
+    --black: #002a23;
+    --brown-dark: #4c4339;
+    --brown-mid: #5d4d43;
+    --warm-grey-2: #c2b7af;
+    --warm-grey-1: #e7e4e3;
+    --white: #ffffff;
+  }
+
+  body {
+    font-family: 'Lato', Arial, sans-serif;
+    background: var(--white);
+    color: var(--black);
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--green-main);
+    padding: 28px 40px 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .header-inner {
+    max-width: 860px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+  }
+
+  .logo-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+
+  .logo-mark { flex-shrink: 0; }
+
+  .logo-text-block { color: white; }
+  .logo-text-block .brand-name {
+    font-size: 22px;
+    font-weight: 900;
+    letter-spacing: 0.04em;
+    line-height: 1.1;
+  }
+  .logo-text-block .brand-sub {
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    font-weight: 300;
+    opacity: 0.9;
+  }
+
+  .header-title-section { padding-bottom: 32px; }
+
+  .header-eyebrow {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    color: #a8dfd3;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .header-title {
+    font-size: 38px;
+    font-weight: 900;
+    color: white;
+    line-height: 1.1;
+    margin-bottom: 10px;
+  }
+
+  .header-title span { color: #ffa090; }
+
+  .header-desc {
+    font-size: 15px;
+    color: rgba(255,255,255,0.92);
+    max-width: 560px;
+    line-height: 1.6;
+    font-weight: 400;
+  }
+  .header-desc a { color: #a8dfd3; }
+
+  .leaf-divider {
+    display: flex;
+    gap: 5px;
+    padding: 16px 0 0;
+    align-items: center;
+  }
+  .leaf-dot {
+    width: 10px; height: 10px;
+    border-radius: 50% 50% 50% 0;
+    transform: rotate(-45deg);
+    background: var(--green-light);
+    opacity: 0.7;
+    flex-shrink: 0;
+  }
+  .leaf-dot:nth-child(odd) { opacity: 0.45; }
+  .leaf-dot:nth-child(3n) { background: rgba(255,255,255,0.4); }
+
+  /* MAIN */
+  main {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 40px 24px 60px;
+  }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--green-dark);
+    margin-bottom: 14px;
+  }
+
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 32px;
+  }
+
+  @media (max-width: 600px) {
+    .grid-2 { grid-template-columns: 1fr; }
+    header { padding: 20px 20px 0; }
+    .header-title { font-size: 28px; }
+    main { padding: 24px 16px 48px; }
+  }
+
+  .card {
+    background: white;
+    border: 1.5px solid var(--warm-grey-1);
+    border-radius: 12px;
+    padding: 22px 24px;
+  }
+
+  .card-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--brown-dark);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--warm-grey-1);
+  }
+
+  .field { margin-bottom: 14px; }
+  .field:last-child { margin-bottom: 0; }
+
+  label {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--black);
+    margin-bottom: 5px;
+  }
+
+  .field-hint {
+    font-size: 11px;
+    color: var(--brown-mid);
+    margin-top: 3px;
+  }
+
+  input[type="number"], select {
+    width: 100%;
+    height: 40px;
+    border: 1.5px solid var(--warm-grey-2);
+    border-radius: 8px;
+    padding: 0 12px;
+    font-family: 'Lato', Arial, sans-serif;
+    font-size: 14px;
+    color: var(--black);
+    background: white;
+    outline: none;
+    transition: border-color 0.15s;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+  input[type="number"]:focus, select:focus {
+    border-color: var(--green-main);
+    box-shadow: 0 0 0 3px rgba(17,134,99,0.12);
+  }
+  select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23002a23' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 36px;
+    cursor: pointer;
+  }
+
+  .ratio-fields {
+    display: none;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  .ratio-fields .field { flex: 1; margin-bottom: 0; }
+
+  .confidence-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 12px;
+    padding: 8px 10px;
+    background: var(--warm-grey-1);
+    border-radius: 7px;
+  }
+  .conf-label { font-size: 12px; color: var(--brown-dark); font-weight: 700; }
+  .conf-dots { display: flex; gap: 4px; }
+  .conf-dot {
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    background: var(--warm-grey-2);
+  }
+  .conf-dot.active { background: var(--green-main); }
+  .conf-text { font-size: 12px; color: var(--brown-dark); margin-left: 2px; font-weight: 600; }
+
+  .nudge-note {
+    font-size: 12px;
+    color: var(--brown-dark);
+    line-height: 1.55;
+    margin-top: 10px;
+    border-left: 3px solid var(--green-light);
+    padding-left: 10px;
+  }
+
+  /* RESULTS */
+  .results-section { margin-bottom: 32px; }
+
+  .results-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  @media (max-width: 500px) { .results-grid { grid-template-columns: 1fr; } }
+
+  .result-card {
+    background: var(--green-main);
+    border-radius: 12px;
+    padding: 20px 22px;
+  }
+
+  .result-card.secondary { background: var(--green-darkest); }
+
+  .result-card-label {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.8);
+    margin-bottom: 6px;
+  }
+
+  .result-card-value {
+    font-size: 32px;
+    font-weight: 900;
+    line-height: 1;
+    color: white;
+  }
+
+  .result-card.secondary .result-card-value {
+    font-size: 24px;
+    color: #a8dfd3;
+  }
+
+  .methodology-link {
+    text-align: center;
+    padding: 14px 18px;
+    background: var(--warm-grey-1);
+    border-radius: 10px;
+    font-size: 14px;
+    color: var(--brown-dark);
+    font-weight: 400;
+  }
+  .methodology-link a {
+    color: var(--green-dark);
+    font-weight: 700;
+    text-decoration: underline;
+  }
+  .methodology-link a:hover { color: var(--green-main); }
+
+  /* NUDGE CARDS */
+  .nudge-cards-section { margin-bottom: 32px; }
+
+  .nudge-cards-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  @media (max-width: 600px) { .nudge-cards-grid { grid-template-columns: 1fr; } }
+
+  .nudge-card {
+    background: white;
+    border: 1.5px solid var(--warm-grey-1);
+    border-radius: 12px;
+    padding: 20px 22px;
+  }
+  .nudge-card.active-nudge {
+    border-color: var(--green-main);
+    box-shadow: 0 0 0 3px rgba(17,134,99,0.10);
+  }
+
+  .nudge-card-number {
+    display: inline-block;
+    background: var(--green-main);
+    color: white;
+    font-size: 11px;
+    font-weight: 900;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 22px;
+    margin-bottom: 10px;
+  }
+  .nudge-card.active-nudge .nudge-card-number { background: var(--orange); }
+
+  .nudge-card-title {
+    font-size: 15px;
+    font-weight: 900;
+    color: var(--black);
+    margin-bottom: 4px;
+  }
+
+  .nudge-card-tagline {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--green-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 10px;
+  }
+
+  .nudge-card-desc {
+    font-size: 13px;
+    color: var(--brown-dark);
+    line-height: 1.6;
+  }
+
+  .nudge-card-examples {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--warm-grey-1);
+  }
+  .nudge-card-examples li {
+    font-size: 12px;
+    color: var(--brown-mid);
+    line-height: 1.5;
+    margin-left: 14px;
+    margin-bottom: 3px;
+  }
+
+  .conf-badge-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 12px;
+  }
+  .badge-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--warm-grey-2);
+  }
+  .badge-dot.on { background: var(--green-main); }
+  .badge-label {
+    font-size: 11px;
+    color: var(--brown-dark);
+    font-weight: 700;
+  }
+
+  .section-divider {
+    height: 3px;
+    background: linear-gradient(90deg, var(--orange), var(--green-light), var(--green-main));
+    border-radius: 2px;
+    margin-bottom: 28px;
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--green-darkest);
+    color: rgba(255,255,255,0.8);
+    text-align: center;
+    padding: 24px 20px;
+    font-size: 12px;
+    line-height: 1.7;
+  }
+  footer a { color: #a8dfd3; text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+  footer strong { color: white; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo-row">
+      <svg class="logo-mark" width="52" height="44" viewBox="0 0 52 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="BFF logo mark">
+        <rect x="0" y="0" width="16" height="44" rx="2" fill="rgba(255,255,255,0.15)"/>
+        <circle cx="8" cy="11" r="9" fill="#06a38d"/>
+        <circle cx="8" cy="11" r="5" fill="#118663"/>
+        <circle cx="8" cy="30" r="9" fill="#06a38d"/>
+        <circle cx="8" cy="30" r="5" fill="#118663"/>
+        <rect x="20" y="0" width="13" height="5" rx="2" fill="white"/>
+        <rect x="20" y="0" width="5" height="44" rx="2" fill="white"/>
+        <rect x="20" y="18" width="10" height="5" rx="2" fill="white"/>
+        <rect x="38" y="0" width="14" height="5" rx="2" fill="#f05b43"/>
+        <rect x="38" y="0" width="5" height="44" rx="2" fill="#f05b43"/>
+        <rect x="38" y="18" width="10" height="5" rx="2" fill="#f05b43"/>
+      </svg>
+      <div class="logo-text-block">
+        <div class="brand-name">Better Food Foundation</div>
+        <div class="brand-sub">PLANT-BASED NUDGE TOOLS</div>
+      </div>
+    </div>
+
+    <div class="header-title-section">
+      <div class="header-eyebrow">Impact Calculator</div>
+      <h1 class="header-title">Plant-Based<br><span>Nudge Calculator</span></h1>
+      <p class="header-desc">Estimate how many animal-based meals your food-choice nudge will replace each year. Based on the <a href="https://vegannudges.com" target="_blank">Vegan Nudges Database</a> and BFF's Five Nudge Framework.</p>
+    </div>
+
+    <div class="leaf-divider">
+      <div class="leaf-dot"></div><div class="leaf-dot"></div><div class="leaf-dot"></div>
+      <div class="leaf-dot"></div><div class="leaf-dot"></div><div class="leaf-dot"></div>
+      <div class="leaf-dot"></div><div class="leaf-dot"></div><div class="leaf-dot"></div>
+      <div class="leaf-dot"></div><div class="leaf-dot"></div><div class="leaf-dot"></div>
+      <div class="leaf-dot"></div><div class="leaf-dot"></div><div class="leaf-dot"></div>
+      <div class="leaf-dot"></div><div class="leaf-dot"></div><div class="leaf-dot"></div>
+      <div class="leaf-dot"></div><div class="leaf-dot"></div><div class="leaf-dot"></div>
+      <div class="leaf-dot"></div><div class="leaf-dot"></div><div class="leaf-dot"></div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <div class="section-label">Step 1 — Your food service setting</div>
+  <div class="grid-2" style="margin-bottom:32px;">
+    <div class="card">
+      <div class="card-title">Institution details</div>
+      <div class="field">
+        <label for="mealsDaily">Meals served daily</label>
+        <input type="number" id="mealsDaily" value="1000" min="1">
+        <div class="field-hint">Total meals across all service periods</div>
+      </div>
+      <div class="field">
+        <label for="daysOpen">Days open per year</label>
+        <input type="number" id="daysOpen" value="250" min="1" max="366">
+        <div class="field-hint">e.g. 250 for a university campus</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Nudge type</div>
+      <div class="field">
+        <label for="nudgeType">Which nudge are you implementing?</label>
+        <select id="nudgeType" onchange="onNudgeChange()">
+          <option value="default">1. Plant-based defaults</option>
+          <option value="ratio">2. Climate-friendly ratios</option>
+          <option value="placement">3. Prime placement</option>
+          <option value="swap">4. Subtle substitutions</option>
+          <option value="label">5. Tasty titles &amp; descriptions</option>
+          <option value="other">6. Other nudges</option>
+        </select>
+      </div>
+
+      <div class="ratio-fields" id="ratioFields">
+        <div class="field">
+          <label for="x1">Current veg ratio (%)</label>
+          <input type="number" id="x1" value="10" min="0" max="100">
+        </div>
+        <div class="field">
+          <label for="x2">New veg ratio (%)</label>
+          <input type="number" id="x2" value="50" min="0" max="100">
+        </div>
+      </div>
+
+      <div class="confidence-row">
+        <span class="conf-label">Evidence strength</span>
+        <div class="conf-dots" id="confDots"></div>
+        <span class="conf-text" id="confText"></span>
+      </div>
+      <div class="nudge-note" id="nudgeNote"></div>
+    </div>
+  </div>
+
+  <div class="section-label">Step 2 — Your estimated impact</div>
+  <div class="results-section">
+    <div class="results-grid">
+      <div class="result-card">
+        <div class="result-card-label">Animal-based meals replaced (annually)</div>
+        <div class="result-card-value" id="outMeals">—</div>
+      </div>
+      <div class="result-card secondary">
+        <div class="result-card-label">Nudge multiplier used</div>
+        <div class="result-card-value" id="outMult">—</div>
+      </div>
+    </div>
+    <div class="methodology-link">
+      Want to know how we calculate this? <a href="https://betterfoodfoundation.org/research" target="_blank">Click here to learn about our methodology →</a>
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <div class="nudge-cards-section">
+    <div class="section-label">BFF's top 5 nudge strategies</div>
+    <div class="nudge-cards-grid" id="nudgeCardsGrid"></div>
+  </div>
+
+</main>
+
+<footer>
+  <strong>Better Food Foundation</strong> · Plant-Based Nudge Calculator<br>
+  Multipliers sourced from the <a href="https://vegannudges.com" target="_blank">Vegan Nudges Database</a> and peer-reviewed literature.<br>
+  Prime placement data: <a href="https://doi.org/10.1007/s10654-025-01194-y" target="_blank">Hünninghaus et al., 2025</a> &amp; <a href="https://www.sciencedirect.com/science/article/abs/pii/S0195666317309527" target="_blank">Bacon &amp; Krpan, 2018</a>.<br>
+  <span style="opacity:0.6;font-size:11px;">Better Food Foundation · betterfoodfoundation.org · hello@betterfoodfoundation.org</span>
+</footer>
+
+<script>
+const nudges = {
+  default: {
+    name: "Plant-Based by Default",
+    tagline: "Make the best choice, the easiest choice",
+    mult: 0.5018,
+    conf: 4,
+    confLabel: "Medium-high",
+    note: "Average across all known trials: vegan default condition % minus meat default condition %. Pre-post design may inflate estimates.",
+    desc: "Serve plant-based foods by default, with animal products available by request. Studies show defaults are the most effective strategy for increasing plant-based food consumption while preserving freedom of choice.",
+    examples: [
+      "Use plant-based patties by default in burgers, with meat available by request",
+      "Set oat milk as the default in coffee and tea — oat milk is 85% lower in carbon emissions than dairy",
+      "On event registrations, offer a plant-based menu with an opt-in for animal products"
+    ]
+  },
+  ratio: {
+    name: "Climate-Friendly Ratios",
+    tagline: "Make plant-based foods the most plentiful",
+    mult: null,
+    conf: 4,
+    confLabel: "Medium-high",
+    note: "Linear regression across 22 datapoints (slope = 0.7586, SD = 0.1417). Enter your current and target veg ratios above.",
+    desc: "Increase the ratio of plant-based offerings — aim for 2:1 more plant-based entrees than meat dishes (50% or more). Make sure every meat-based dish has a similarly appealing plant-based alternative.",
+    examples: [
+      "Aim for at least 50% of entrees to be plant-based",
+      "Encourage chefs to serve animal products as an add-on or garnish",
+      "Ensure every meat dish has an equally appealing plant-based option alongside it"
+    ]
+  },
+  placement: {
+    name: "Prime Placement",
+    tagline: "Make plant-based foods the most visible",
+    mult: 0.0425,
+    conf: 2,
+    confLabel: "Medium-low",
+    note: "Average of two studies. Buffet and menu placement contexts may differ in impact.",
+    desc: "Where food appears in a buffet line or on a menu significantly influences what people choose. Simply placing plant-based options first — at the front of the buffet or top of the menu — increases how often they are selected.",
+    examples: [
+      "Place plant-based entrees at the front of the buffet",
+      "List plant-based options at the top of the menu",
+      "Always make the 'daily special' or promoted meal plant-based"
+    ]
+  },
+  swap: {
+    name: "Subtle Substitutions",
+    tagline: "Make the switch to plant-based ingredients",
+    mult: 0.05,
+    conf: 1,
+    confLabel: "Low",
+    note: "No large-scale data available. Estimated from Rethink Priorities egg study. High variance — treat as a rough lower bound.",
+    desc: "Swap in plant-based condiments, mayo, desserts, and other ingredients without changing the dish. The high quality of plant-based products today means most diners won't notice the difference — and dishes instantly become more accessible to guests with dairy allergies.",
+    examples: [
+      "Switch to plant-based mayo or frosting in every dish or baked good",
+      "Use plant-based milk, eggs, or butter wherever recipes allow",
+      "Swap plant-based condiments and bread across the menu"
+    ]
+  },
+  label: {
+    name: "Tasty Titles & Descriptions",
+    tagline: "Switch menu titles to sound delicious",
+    mult: 0.118,
+    conf: 3,
+    confLabel: "Medium",
+    note: "Average percentage-point change across 32 trials comparing no-nudge to vegan label conditions.",
+    desc: "How we name food matters. Renaming dishes to highlight flavors, textures, and ingredients — rather than calling them 'vegetarian' or 'vegan' — significantly increases how often plant-based dishes are ordered.",
+    examples: [
+      "Use 'Cuban Black Bean Soup' instead of 'Vegetarian Black Bean Soup'",
+      "Focus descriptions on flavors and textures, not health or plant-based claims",
+      "Label dishes with meat, dairy, or eggs — and mark plant-based with a small (v)"
+    ]
+  },
+  other: {
+    name: "Other Nudges",
+    tagline: "Combinations or emerging strategies",
+    mult: 0.07,
+    conf: 2,
+    confLabel: "Medium-low",
+    note: "Average of substitutions, placement, and label multipliers. Use for combinations or strategies not listed above.",
+    desc: "Trying a combination of nudges, or a strategy not covered above? Use this option as a general estimate. This figure is the average of the substitution, placement, and labeling multipliers.",
+    examples: [
+      "Combinations of labeling, placement, and substitution nudges",
+      "Novel or emerging nudge strategies",
+      "Pilot programs without a defined nudge type"
+    ]
+  }
+};
+
+const nudgeOrder = ['default','ratio','placement','swap','label','other'];
+const nudgeNums  = ['1','2','3','4','5','6'];
+
+function buildCards(activeKey) {
+  const grid = document.getElementById('nudgeCardsGrid');
+  grid.innerHTML = nudgeOrder.map((k, i) => {
+    const nd = nudges[k];
+    const isActive = k === activeKey;
+    const dots = Array.from({length:4}, (_,j) =>
+      `<span class="badge-dot${j < nd.conf ? ' on' : ''}"></span>`
+    ).join('');
+    const examples = nd.examples.map(e => `<li>${e}</li>`).join('');
+    return `<div class="nudge-card${isActive ? ' active-nudge' : ''}" id="card-${k}">
+      <div class="nudge-card-number">${nudgeNums[i]}</div>
+      <div class="nudge-card-title">${nd.name}</div>
+      <div class="nudge-card-tagline">${nd.tagline}</div>
+      <div class="nudge-card-desc">${nd.desc}</div>
+      <div class="nudge-card-examples"><ul>${examples}</ul></div>
+      <div class="conf-badge-row">${dots}<span class="badge-label">${nd.confLabel} evidence</span></div>
+    </div>`;
+  }).join('');
+}
+
+function onNudgeChange() {
+  const t = document.getElementById('nudgeType').value;
+  const nd = nudges[t];
+
+  document.getElementById('ratioFields').style.display = t === 'ratio' ? 'flex' : 'none';
+
+  let dotsHtml = '';
+  for (let i = 1; i <= 4; i++) {
+    dotsHtml += `<span class="conf-dot${i <= nd.conf ? ' active' : ''}"></span>`;
+  }
+  document.getElementById('confDots').innerHTML = dotsHtml;
+  document.getElementById('confText').textContent = nd.confLabel;
+  document.getElementById('nudgeNote').textContent = nd.note;
+
+  buildCards(t);
+  calc();
+}
+
+function calc() {
+  const meals = parseFloat(document.getElementById('mealsDaily').value) || 0;
+  const days  = parseFloat(document.getElementById('daysOpen').value)  || 0;
+  const t     = document.getElementById('nudgeType').value;
+
+  let mult, multDisplay;
+  if (t === 'ratio') {
+    const x1 = parseFloat(document.getElementById('x1').value) || 0;
+    const x2 = parseFloat(document.getElementById('x2').value) || 0;
+    mult = 0.7586 * ((x2 - x1) / 100);
+    multDisplay = mult.toFixed(4) + ` (\u0394${(x2-x1).toFixed(0)}pp \u00d7 0.7586)`;
+  } else {
+    mult = nudges[t].mult;
+    multDisplay = mult.toFixed(4);
+  }
+
+  const total = Math.round(meals * days * mult);
+  document.getElementById('outMeals').textContent = total >= 0 ? total.toLocaleString() : '\u2014';
+  document.getElementById('outMult').textContent  = multDisplay;
+}
+
+['mealsDaily','daysOpen','x1','x2'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('input', calc);
+});
+
+onNudgeChange();
+</script>
+</body>
+</html>
