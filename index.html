@@ -568,6 +568,11 @@
         <input type="number" id="daysOpen" value="250" min="1" max="366">
         <div class="field-hint">e.g. 250 for a university campus</div>
       </div>
+      <div class="field">
+        <label for="consumerPop">Consumer population (%)</label>
+        <input type="number" id="consumerPop" value="100" min="1" max="100">
+        <div class="field-hint">% of daily diners exposed to the nudge</div>
+      </div>
     </div>
   </div>
 
@@ -794,7 +799,7 @@ function onNudgeChange() {
 function calc() {
   const meals = parseFloat(document.getElementById('mealsDaily').value) || 0;
   const days = parseFloat(document.getElementById('daysOpen').value) || 0;
-  const pop = 100;
+  const pop = parseFloat(document.getElementById('consumerPop').value) || 100;
   const t = document.getElementById('nudgeType').value;
 
   let mult, multDisplay;
@@ -820,7 +825,7 @@ function calc() {
     `= ${meals.toLocaleString()} × ${days} × ${mult.toFixed(4)} = ${total >= 0 ? total.toLocaleString() : '—'} meals/year`;
 }
 
-['mealsDaily','daysOpen','x1','x2'].forEach(id => {
+['mealsDaily','daysOpen','consumerPop','x1','x2'].forEach(id => {
   const el = document.getElementById(id);
   if (el) el.addEventListener('input', calc);
 });
