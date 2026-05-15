@@ -559,9 +559,9 @@
     <div class="card">
       <div class="card-title">Institution details</div>
       <div class="field">
-        <label for="mealsDaily">Meals served daily</label>
-        <input type="number" id="mealsDaily" value="1000" min="1">
-        <div class="field-hint">Total meals across all service periods</div>
+        <label for="mealsDaily">Meals per consumer per day</label>
+        <input type="number" id="mealsDaily" value="1" min="1" max="3">
+        <div class="field-hint">1 = one meal setting (e.g. lunch only), up to 3 for breakfast, lunch &amp; dinner</div>
       </div>
       <div class="field">
         <label for="daysOpen">Days open per year</label>
@@ -569,9 +569,9 @@
         <div class="field-hint">e.g. 250 for a university campus</div>
       </div>
       <div class="field">
-        <label for="consumerPop">Consumer population (%)</label>
-        <input type="number" id="consumerPop" value="100" min="1" max="100">
-        <div class="field-hint">% of daily diners exposed to the nudge</div>
+        <label for="consumerPop">Consumer population</label>
+        <input type="number" id="consumerPop" value="500" min="1">
+        <div class="field-hint">Number of people who eat at the institution daily</div>
       </div>
     </div>
   </div>
@@ -799,7 +799,7 @@ function onNudgeChange() {
 function calc() {
   const meals = parseFloat(document.getElementById('mealsDaily').value) || 0;
   const days = parseFloat(document.getElementById('daysOpen').value) || 0;
-  const pop = parseFloat(document.getElementById('consumerPop').value) || 100;
+  const pop = parseFloat(document.getElementById('consumerPop').value) || 500;
   const t = document.getElementById('nudgeType').value;
 
   let mult, multDisplay;
@@ -814,7 +814,7 @@ function calc() {
     multDisplay = mult.toFixed(4);
   }
 
-  const total = Math.round(meals * days * (pop / 100) * mult);
+  const total = Math.round(meals * days * pop * mult);
   const co2PerMeal = 1.77;
   const totalCO2 = total >= 0 ? Math.round(total * co2PerMeal) : null;
 
