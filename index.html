@@ -153,8 +153,28 @@
     margin-bottom: 40px;
   }
 
+  .grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 22px;
+    margin-bottom: 40px;
+    align-items: start;
+  }
+
+  .grid-3 .results-section { margin-bottom: 0; }
+
+  .grid-3 .results-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  @media (max-width: 800px) {
+    .grid-3 { grid-template-columns: 1fr; }
+  }
+
   @media (max-width: 640px) {
     .grid-2 { grid-template-columns: 1fr; }
+    .grid-3 { grid-template-columns: 1fr; }
     .logo-bar { padding: 18px 20px; }
     .header-green { padding: 0 20px; }
     .header-title { font-size: 32px; }
@@ -533,9 +553,9 @@
 
 <main>
 
-  <div class="grid-2" style="margin-bottom:28px;">
+  <div class="grid-3" style="margin-bottom:28px;">
   <div>
-    <div class="section-label">Step 1 — Food service</div>
+    <div class="section-label">Step 1: Input Institution Info</div>
     <div class="card">
       <div class="card-title">Institution details</div>
       <div class="field">
@@ -552,7 +572,7 @@
   </div>
 
   <div>
-    <div class="section-label">Step 2 — Nudge type</div>
+    <div class="section-label">Step 2: Choose Your Nudge</div>
     <div class="card">
     <div class="card-title">Nudge type</div>
     <div class="field">
@@ -586,10 +606,10 @@
       <div class="nudge-note" id="nudgeNote"></div>
     </div>
   </div>
-  </div>
 
-  <div class="section-label">Step 3 — Your estimated impact</div>
-  <div class="results-section">
+  <div>
+    <div class="section-label">Step 3: See Your Results!</div>
+    <div class="results-section">
     <div class="results-grid">
       <div class="result-card">
         <div class="result-card-label">Animal-based meals replaced (annually)</div>
@@ -606,10 +626,8 @@
         <div style="font-size:12px;color:var(--brown-mid);margin-top:8px;">1.77 kg CO₂e per meal swapped (2.59 meat − 0.82 plant-based)</div>
       </div>
     </div>
-    <div class="formula-box">
-      <strong>Formula:</strong> Meals Served Daily × Days Open × Nudge Multiplier<br>
-      <span id="formulaExpanded" style="color:var(--brown-dark);"></span>
     </div>
+  </div>
   </div>
 
   <div class="section-divider"></div>
@@ -627,18 +645,10 @@
     </div>
   </div>
 
-  <div class="formula-box" style="margin-bottom:40px;">
-    <strong>Open questions &amp; limitations:</strong> Most plant-based default studies are pre-post (not experiments), which may inflate estimates. Long-term nudge effects are largely unknown — impact may diminish over time. Extrapolating to animals saved or CO₂ reduced requires knowing which animal products were replaced.
-  </div>
 
 </main>
 
-<footer>
-  <strong>Better Food Foundation</strong> · Plant-Based Nudge Calculator<br>
-  Multipliers sourced from the <a href="https://vegannudges.com" target="_blank">Vegan Nudges Database</a> and peer-reviewed literature.<br>
-  Prime placement data: <a href="https://doi.org/10.1007/s10654-025-01194-y" target="_blank">Hünninghaus et al., 2025</a> &amp; <a href="https://www.sciencedirect.com/science/article/abs/pii/S0195666317309527" target="_blank">Bacon &amp; Krpan, 2018</a>.<br>
-  <span style="opacity:0.45;font-size:12px;">For questions, contact Better Food Foundation · betterfoodfoundation.org</span>
-</footer>
+
 
 <script>
 
