@@ -713,7 +713,7 @@ function buildCarousel() {
     const nd = nudges[k];
     const multDisplay = k === 'ratio' ? '0.7586 × Δ' : nd.mult.toFixed(4);
     let dotsHtml = '';
-    for (let d = 1; d <= 4; d++) {
+    for (let d = 1; d <= 5; d++) {
       dotsHtml += `<span class="slide-conf-dot${d <= nd.conf ? ' on' : ''}"></span>`;
     }
     return `<div class="carousel-slide" id="slide-${k}">
@@ -774,7 +774,7 @@ function onNudgeChange() {
   document.getElementById('ratioFields').style.display = t === 'ratio' ? 'flex' : 'none';
 
   let dotsHtml = '';
-  for (let i = 1; i <= 4; i++) {
+  for (let i = 1; i <= 5; i++) {
     dotsHtml += `<span class="conf-dot${i <= nd.conf ? ' active' : ''}"></span>`;
   }
   document.getElementById('confDots').innerHTML = dotsHtml;
