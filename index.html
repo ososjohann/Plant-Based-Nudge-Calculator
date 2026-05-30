@@ -98,9 +98,8 @@
   .header-eyebrow {
     font-size: 13px;
     font-weight: 700;
-    letter-spacing: 0.18em;
+    letter-spacing: 0.04em;
     color: rgba(255,255,255,0.7);
-    text-transform: uppercase;
     margin-bottom: 10px;
   }
 
@@ -133,8 +132,7 @@
   .section-label {
     font-size: 13px;
     font-weight: 700;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
+    letter-spacing: 0.02em;
     color: var(--green-main);
     margin-bottom: 18px;
   }
@@ -188,8 +186,8 @@
     font-size: 13px;
     font-weight: 700;
     color: var(--brown-dark);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    font-size: 14px;
     margin-bottom: 20px;
     padding-bottom: 14px;
     border-bottom: 2px solid var(--warm-grey-1);
@@ -317,8 +315,7 @@
   .result-card-label {
     font-size: 13px;
     font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
     opacity: 0.8;
     margin-bottom: 10px;
     line-height: 1.4;
@@ -390,8 +387,7 @@
   .slide-num {
     font-size: 12px;
     font-weight: 700;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
+    letter-spacing: 0.04em;
     color: var(--green-light);
   }
 
@@ -426,8 +422,7 @@
   .slide-conf-label {
     font-size: 12px;
     font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
+    letter-spacing: 0.02em;
     color: rgba(255,255,255,0.45);
   }
   .slide-conf-dots { display: flex; gap: 6px; }
@@ -547,7 +542,7 @@
 
   <div class="grid-3" style="margin-bottom:28px;">
   <div>
-    <div class="section-label">Step 1: Input Institution Info</div>
+    <div class="section-label">Step 1: <strong>Input institution info</strong></div>
     <div class="card">
       <div class="card-title">Institution details</div>
       <div class="field">
@@ -569,7 +564,7 @@
   </div>
 
   <div>
-    <div class="section-label">Step 2: Choose Your Nudge</div>
+    <div class="section-label">Step 2: <strong>Choose your nudge</strong></div>
     <div class="card">
     <div class="card-title">Nudge type</div>
     <div class="field">
@@ -605,7 +600,7 @@
   </div>
 
   <div>
-    <div class="section-label">Step 3: See Your Results!</div>
+    <div class="section-label">Step 3: <strong>See your results</strong></div>
     <div class="results-section">
     <div class="results-grid">
       <div class="result-card">
@@ -625,7 +620,7 @@
   <div class="section-divider"></div>
 
   <div class="nudge-carousel-section">
-    <div class="section-label">Nudge reference — BFF's five nudges</div>
+    <div class="section-label">Nudge reference — <strong>BFF's five nudges</strong></div>
     <div class="carousel-wrapper">
       <img class="carousel-bg-mark" src="" alt="" id="carousel-bg-mark-img">
       <div class="carousel-track" id="carouselTrack"></div>
@@ -721,7 +716,7 @@ function buildCarousel() {
       <div class="slide-name">${nd.name}</div>
       <div class="slide-meta">
         <div>
-          <div style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:4px;">Multiplier</div>
+          <div style="font-size:11px;font-weight:700;letter-spacing:.02em;color:rgba(255,255,255,.45);margin-bottom:4px;">Multiplier</div>
           <div class="slide-mult">${multDisplay}</div>
         </div>
         <div class="slide-conf-wrap">
