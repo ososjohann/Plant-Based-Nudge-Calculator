@@ -552,17 +552,17 @@
       <div class="card-title">Institution details</div>
       <div class="field">
         <label for="mealsDaily">Meals per consumer per day</label>
-        <input type="number" id="mealsDaily" value="1" min="1" max="3">
+        <input type="number" id="mealsDaily" placeholder="e.g. 1" min="1" max="3">
         <div class="field-hint">1 = one meal setting (e.g. lunch only), up to 3 for breakfast, lunch &amp; dinner</div>
       </div>
       <div class="field">
         <label for="daysOpen">Days open per year</label>
-        <input type="number" id="daysOpen" value="250" min="1" max="366">
-        <div class="field-hint">e.g. 250 for a university campus</div>
+        <input type="number" id="daysOpen" placeholder="e.g. 250" min="1" max="366">
+        <div class="field-hint">e.g. 250 = weekdays minus public holidays</div>
       </div>
       <div class="field">
         <label for="consumerPop">Consumer population</label>
-        <input type="number" id="consumerPop" value="500" min="1">
+        <input type="number" id="consumerPop" placeholder="e.g. 500" min="1">
         <div class="field-hint">Number of people who eat at the institution daily</div>
       </div>
     </div>
@@ -587,11 +587,11 @@
     <div class="ratio-fields" id="ratioFields">
       <div class="field">
         <label for="x1">Current veg ratio (%)</label>
-        <input type="number" id="x1" value="10" min="0" max="100">
+        <input type="number" id="x1" placeholder="e.g. 10" min="0" max="100">
       </div>
       <div class="field">
         <label for="x2">New veg ratio (%)</label>
-        <input type="number" id="x2" value="50" min="0" max="100">
+        <input type="number" id="x2" placeholder="e.g. 50" min="0" max="100">
       </div>
     </div>
 
@@ -789,15 +789,38 @@ function onNudgeChange() {
 }
 
 function calc() {
-  const meals = parseFloat(document.getElementById('mealsDaily').value) || 0;
-  const days = parseFloat(document.getElementById('daysOpen').value) || 0;
-  const pop = parseFloat(document.getElementById('consumerPop').value) || 500;
+  const mealsVal = document.getElementById('mealsDaily').value;
+  const daysVal = document.getElementById('daysOpen').value;
+  const popVal = document.getElementById('consumerPop').value;
   const t = document.getElementById('nudgeType').value;
+
+  const meals = parseFloat(mealsVal);
+  const days = parseFloat(daysVal);
+  const pop = parseFloat(popVal);
+
+  // For ratio nudge, also require x1 and x2
+  let x1, x2;
+  if (t === 'ratio') {
+    x1 = parseFloat(document.getElementById('x1').value);
+    x2 = parseFloat(document.getElementById('x2').value);
+  }
+
+  const basesFilled = mealsVal !== '' && daysVal !== '' && popVal !== '' &&
+    !isNaN(meals) && !isNaN(days) && !isNaN(pop);
+  const ratioFilled = t !== 'ratio' || (
+    document.getElementById('x1').value !== '' && document.getElementById('x2').value !== '' &&
+    !isNaN(x1) && !isNaN(x2)
+  );
+
+  if (!basesFilled || !ratioFilled) {
+    document.getElementById('outMeals').textContent = '—';
+    document.getElementById('outCO2').textContent = '—';
+    document.getElementById('formulaExpanded').textContent = '—';
+    return;
+  }
 
   let mult, multDisplay;
   if (t === 'ratio') {
-    const x1 = parseFloat(document.getElementById('x1').value) || 0;
-    const x2 = parseFloat(document.getElementById('x2').value) || 0;
     const delta = (x2 - x1) / 100;
     mult = 0.7586 * delta;
     multDisplay = mult.toFixed(4) + ` (Δ${(x2-x1).toFixed(0)}pp × 0.7586)`;
