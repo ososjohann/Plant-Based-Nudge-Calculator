@@ -604,6 +604,25 @@ function calc() {
 
 onNudgeChange();
 
+// ── Embed helper: report height to a parent page (for auto-sizing iframes) ──
+(function () {
+  if (window.parent === window) return; // not embedded
+  function reportHeight() {
+    var h = document.documentElement.scrollHeight;
+    window.parent.postMessage({ type: 'nudge-calc-height', height: h }, '*');
+  }
+  window.addEventListener('load', reportHeight);
+  window.addEventListener('resize', reportHeight);
+  ['mealsDaily','daysOpen','consumerPop','x1','x2','nudgeType'].forEach(function (id) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener('input', reportHeight);
+    el.addEventListener('change', reportHeight);
+  });
+  if (window.ResizeObserver) new ResizeObserver(reportHeight).observe(document.body);
+  reportHeight();
+})();
+
 </script>
 </body>
 </html>
