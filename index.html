@@ -573,7 +573,8 @@ function calc() {
   if (!basesFilled || !ratioFilled) {
     document.getElementById('outMeals').textContent = '—';
     document.getElementById('outCO2').textContent = '—';
-    document.getElementById('formulaExpanded').textContent = '—';
+    const fe = document.getElementById('formulaExpanded');
+    if (fe) fe.textContent = '—';
     return;
   }
 
@@ -593,7 +594,8 @@ function calc() {
 
   document.getElementById('outMeals').textContent = total >= 0 ? total.toLocaleString() : '—';
   document.getElementById('outCO2').textContent = totalCO2 !== null ? totalCO2.toLocaleString() : '—';
-  document.getElementById('formulaExpanded').textContent =
+  const feOut = document.getElementById('formulaExpanded');
+  if (feOut) feOut.textContent =
     `= ${meals.toLocaleString()} × ${days} × ${mult.toFixed(4)} = ${total >= 0 ? total.toLocaleString() : '—'} meals/year`;
 }
 
