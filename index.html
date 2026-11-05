@@ -608,9 +608,21 @@ onNudgeChange();
 // ── Embed helper: report height to a parent page (for auto-sizing iframes) ──
 (function () {
   if (window.parent === window) return; // not embedded
+  // Measure the content (body), not the document: documentElement.scrollHeight
+  // is never smaller than the iframe itself, so the frame could grow but never shrink.
+  var lastH = 0, pending = false;
   function reportHeight() {
-    var h = document.documentElement.scrollHeight;
-    window.parent.postMessage({ type: 'nudge-calc-height', height: h }, '*');
+    if (pending) return;
+    pending = true;
+    requestAnimationFrame(function () {
+      pending = false;
+      var cs = getComputedStyle(document.body);
+      var h = Math.ceil(document.body.getBoundingClientRect().height +
+              parseFloat(cs.marginTop) + parseFloat(cs.marginBottom));
+      if (h === lastH) return;
+      lastH = h;
+      window.parent.postMessage({ type: 'nudge-calc-height', height: h }, '*');
+    });
   }
   window.addEventListener('load', reportHeight);
   window.addEventListener('resize', reportHeight);
